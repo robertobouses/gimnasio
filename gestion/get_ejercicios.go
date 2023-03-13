@@ -25,7 +25,7 @@ type Ejercicio struct {
 func GetEjercicios(c *gin.Context) {
 
 	db, _ := gorm.Open("postgres", "host=localhost port=5432 user=postgres dbname=postgres password=mysecretpassword sslmode=disable")
-
+	fmt.Println("valor db", db)
 	var ejercicios []Ejercicio
 	if err := db.Find(&ejercicios).Error; err != nil {
 		c.AbortWithStatus(http.StatusNotFound)
