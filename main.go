@@ -9,6 +9,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/jinzhu/gorm"
 	_ "github.com/lib/pq"
+	"github.com/robertobouses/gimnasio/gestion"
 )
 
 type Ejercicio struct {
@@ -35,22 +36,12 @@ func main() {
 	db.AutoMigrate(&Ejercicio{})
 
 	r := gin.Default()
-	r.GET("/ejercicios", GetEjercicios)
+	r.GET("/ejercicios", gestion.GetEjercicios)
 	r.GET("/ejercicios/:id", GetEjercicioByID)
 	r.GET("/ejercicios/tipo/:clase", GetEjerciciosPorTipo)
 	r.GET("/ejercicios/cardio/:cardio", GetEjerciciosPorCardio)
 	r.POST("/ejercicios", CrearEjercicio)
 	r.Run()
-}
-
-func GetEjercicios(c *gin.Context) {
-	var ejercicios []Ejercicio
-	if err := db.Find(&ejercicios).Error; err != nil {
-		c.AbortWithStatus(http.StatusNotFound)
-		fmt.Println(err)
-	} else {
-		c.JSON(http.StatusOK, ejercicios)
-	}
 }
 
 func GetEjercicioByID(c *gin.Context) {
